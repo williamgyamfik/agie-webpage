@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,11 +15,12 @@ import {
 import ContactForm from "@/components/ContactForm";
 import { contactInfo, socialLinks } from "@/constants";
 
-export const metadata: Metadata = {
-  title: "Contact | A.G.I.E",
+export const metadata: Metadata = pageMetadata({
+  title: "Contact",
   description:
     "Get in touch with the Association of Ghanaians in Estonia about membership, events, partnerships or general questions.",
-};
+  path: "/contact",
+});
 
 const socialIcons = { Facebook, Instagram, LinkedIn: Linkedin };
 

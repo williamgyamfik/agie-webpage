@@ -33,6 +33,13 @@ needed later.
 - [ ] Build `/join` page and route handler; keep the Apps Script URL in a server-side env var.
 - [ ] Point "Join Us Now" and "Become a Member" at `/join`.
 
+## Launch / search engines
+
+- [x] Custom domain live: `agie.ee` → redirects to `https://www.agie.ee` (canonical).
+- [ ] Google Search Console: add `agie.ee` as a Domain property (verify with a DNS TXT record), then submit `https://www.agie.ee/sitemap.xml`. Optionally do the same in Bing Webmaster Tools.
+- [ ] After launch, run the home page through the Facebook Sharing Debugger and Google Rich Results Test (links in README).
+- [ ] Once confirmed, add email/phone (`contactPoint`) and real social URLs to the JSON-LD in `app/page.tsx` (social links are picked up automatically from `constants.ts`).
+
 ## Related loose ends
 
 - [ ] All three forms (home `ContactSection.tsx`, `/contact` `ContactForm.tsx`, `NewsLetter.tsx`) use the `sendViaEmailApp()` stop-gap in `lib/mailto.ts` (opens the visitor's email app). Replace with the same backend as above; the newsletter may want a mailing-list service instead.
