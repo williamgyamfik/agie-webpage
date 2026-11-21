@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -95,11 +96,12 @@ const team = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "About us | A.G.I.E",
+export const metadata: Metadata = pageMetadata({
+  title: "About us",
   description:
     "About the Association of Ghanaians in Estonia (Eesti Ghanalaste Ühing MTÜ): our aims, activities and executive team.",
-};
+  path: "/about",
+});
 
 const heroFacts = ["Formed 2017", "Registered 2020", "Non-profit · Non-partisan"];
 

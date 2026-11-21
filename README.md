@@ -44,6 +44,10 @@ app/
   contact/page.tsx    /contact
   gallery/page.tsx    /gallery
   globals.css         Tailwind import + theme variables
+  opengraph-image.tsx Social share image (generated at build time)
+  sitemap.ts          /sitemap.xml
+  robots.ts           /robots.txt
+  manifest.ts         /manifest.webmanifest
   icon.png            Browser-tab icon (generated from the logo)
   apple-icon.png      iOS home-screen icon (logo on white)
 components/
@@ -63,6 +67,7 @@ components/
   ContactForm.tsx     Contact form used on /contact
 constants.ts          Navigation links, contact details, social links
 lib/mailto.ts         Temporary form "backend": opens the visitor's email app
+lib/site.ts           Site URL + SEO settings, `pageMetadata()` helper
 lib/utils.ts          `cn()` helper for merging Tailwind classes (shadcn/ui)
 public/assets/        Images
 public/videos/        Hero background video
@@ -153,6 +158,34 @@ Keep new work consistent with the existing sections:
 - The project is set up for [shadcn/ui](https://ui.shadcn.com) (config in
   `components.json`, helper in `lib/utils.ts`), but no shadcn components are
   currently installed. Add one with `npx shadcn@latest add <component>`.
+
+---
+
+## SEO and social previews
+
+Built on the Next.js Metadata API — no extra packages.
+
+| What                                   | Where                                   |
+| -------------------------------------- | --------------------------------------- |
+| Site name, description, URL, colours   | `lib/site.ts`                           |
+| Default tags (title template, Open Graph, X card, robots) | `metadata` in `app/layout.tsx` |
+| Per-page title/description/canonical   | `pageMetadata({ … })` at the top of each `app/*/page.tsx` |
+| Share image (1200×630, all pages)      | `app/opengraph-image.tsx` — preview at `/opengraph-image` |
+| Sitemap / robots / web app manifest    | `app/sitemap.ts`, `app/robots.ts`, `app/manifest.ts` |
+| Google structured data (Organization)  | JSON-LD in `app/page.tsx`               |
+
+- **Site URL** is `https://www.agie.ee` (`productionUrl` in `lib/site.ts`).
+  Vercel redirects `agie.ee` → `www.agie.ee`, so `www` is the canonical
+  address. If you change the primary domain in Vercel, update `productionUrl`
+  too. `NEXT_PUBLIC_SITE_URL` overrides it (useful for testing).
+- **Only production is indexable.** Preview deployments and local builds send
+  `noindex` and a blocking `robots.txt`, so draft versions never appear in Google.
+- **New page?** Export `metadata = pageMetadata({ title, description, path })`
+  and add the path to `app/sitemap.ts`.
+- **Check previews** after deploying: [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+  (also refreshes Facebook's cache), [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/),
+  [Google Rich Results Test](https://search.google.com/test/rich-results). X has no
+  public validator — post the link in a draft to see the card.
 
 ---
 

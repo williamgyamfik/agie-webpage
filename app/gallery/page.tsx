@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import GalleryGrid, { type GalleryImage } from "@/components/GalleryGrid";
@@ -10,11 +11,12 @@ import gallery1 from "@/public/assets/gallery1.jpg";
 import gallery2 from "@/public/assets/gallery2.jpg";
 import gallery3 from "@/public/assets/gallery3.jpg";
 
-export const metadata: Metadata = {
-  title: "Gallery | A.G.I.E",
+export const metadata: Metadata = pageMetadata({
+  title: "Gallery",
   description:
     "Photos from community events and celebrations of the Association of Ghanaians in Estonia.",
-};
+  path: "/gallery",
+});
 
 const images: GalleryImage[] = [
   {
