@@ -1,21 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Nav from "./Nav";
 import MobileNav from "./MobileNav";
-// import Hero from "../Hero";
 
 const NavWrapper = () => {
   const [showNav, setShowNav] = useState(false);
+  const closeNav = useCallback(() => setShowNav(false), []);
 
-  const closeNav = () => setShowNav(false);
-  const openNav = () => setShowNav(true);
-
+  // Fragment (not a wrapper div) so the sticky header is a direct child of <body>.
   return (
-    <div>
-      <Nav openNav={openNav} />
+    <>
+      <Nav openNav={() => setShowNav(true)} navOpen={showNav} />
       <MobileNav showNav={showNav} closeNav={closeNav} />
-      {/* <Hero /> */}
-    </div>
+    </>
   );
 };
 

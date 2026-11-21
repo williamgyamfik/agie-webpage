@@ -116,6 +116,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Keep #anchor targets clear of the sticky 4rem navbar. */
+    scroll-padding-top: 4rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
   body {
     @apply bg-background text-foreground;
   }

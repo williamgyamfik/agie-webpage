@@ -1,7 +1,9 @@
+"use client";
 import { navigation } from "@/constants";
 import { X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useRef } from "react";
 
 type Props = {
   showNav: boolean;
@@ -9,30 +11,89 @@ type Props = {
 };
 
 const MobileNav = ({ showNav, closeNav }: Props) => {
-  const navOpen = showNav ? "translate-x-0" : "translate-x-[-200%]";
+  const pathName = usePathname();
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // While open: lock page scroll, close on Escape, focus the close button.
+  useEffect(() => {
+    if (!showNav) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeNav();
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [showNav, closeNav]);
 
   return (
-    <div>
+    <div
+      id="mobile-nav"
+      className={`fixed inset-0 z-[60] md:hidden ${showNav ? "" : "pointer-events-none"}`}
+      aria-hidden={!showNav}
+      inert={!showNav}
+    >
+      {/* Backdrop */}
       <div
-        className={`fixed ${navOpen} top-0 inset-0 transform transition-all duration-500 z-[100002] bg-black opacity-70 w-full h-screen`}
-      ></div>
-      <div
-        className={`text-white ${navOpen} top-0 fixed justify-center flex flex-col h-full transform transition-all duration-500 delay-300 w-[80%] sm:w-[60%] bg-gray-900 space-y-6 z-[1000050]`}
-      >
-        {navigation.map((item) => {
-          return (
-            <Link key={item.name} href={item.href}>
-              <p className="text-white w-fit text-2xl ml-12 border-b-[1.5px] pb-2 border-white sm:text-[30px]">
-                {item.name}
-              </p>
-            </Link>
-          );
-        })}
+        onClick={closeNav}
+        className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+          showNav ? "opacity-100" : "opacity-0"
+        }`}
+      />
 
-        <X
-          onClick={closeNav}
-          className="absolute cursor-pointer top-[0.7rem] right-[1.4rem] sm:w-8 sm:h-8 w-6 h-6"
-        />
+      {/* Panel */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        className={`absolute right-0 top-0 flex h-full w-[80%] max-w-xs flex-col bg-white shadow-xl transition-transform duration-300 ${
+          showNav ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex h-16 items-center justify-between border-b border-gray-200 px-6">
+          <span className="text-lg font-bold text-gray-900">Menu</span>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={closeNav}
+            aria-label="Close menu"
+            className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-800 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700"
+          >
+            <X className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+
+        <nav aria-label="Mobile" className="flex flex-1 flex-col gap-1 p-4">
+          {navigation.map((item) => {
+            const isActive = pathName === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={closeNav}
+                aria-current={isActive ? "page" : undefined}
+                className={`rounded-lg px-4 py-3 text-lg font-medium transition-colors ${
+                  isActive
+                    ? "bg-green-50 text-green-700"
+                    : "text-gray-800 hover:bg-gray-50 hover:text-green-700"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="border-t border-gray-200 p-4">
+          <Link
+            href="/#join"
+            onClick={closeNav}
+            className="block rounded-lg bg-green-700 px-4 py-3 text-center font-semibold text-white transition hover:bg-green-800"
+          >
+            Join Us
+          </Link>
+        </div>
       </div>
     </div>
   );

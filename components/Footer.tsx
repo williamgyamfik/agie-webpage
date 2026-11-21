@@ -1,144 +1,109 @@
-import { Separator } from "@/components/ui/separator";
-
-import Link from "next/link";
-import logo from "@/public/assets/logoNoBg.png";
 import Image from "next/image";
+import Link from "next/link";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import logo from "@/public/assets/logoNoBg.png";
+import { contactInfo, navigation, socialLinks } from "@/constants";
+
+const socialIcons = { Facebook, Instagram, LinkedIn: Linkedin };
 
 const footerSections = [
+  { title: "Explore", links: navigation },
   {
-    title: "Company",
+    title: "Get Involved",
     links: [
-      {
-        title: "About us",
-        href: "#",
-      },
-
-      {
-        title: "News",
-        href: "#",
-      },
-
-      {
-        title: "Contact",
-        href: "#",
-      },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      {
-        title: "Blog",
-        href: "#",
-      },
-      {
-        title: "Newsletter",
-        href: "#",
-      },
-      {
-        title: "Events",
-        href: "#",
-      },
-      {
-        title: "Help centre",
-        href: "#",
-      },
-
-      {
-        title: "Support",
-        href: "#",
-      },
-      {
-        title: "Privacy Policy",
-        href: "/privacy-policy",
-      },
-    ],
-  },
-  {
-    title: "Social",
-    links: [
-      {
-        title: "Twitter",
-        href: "#",
-      },
-      {
-        title: "LinkedIn",
-        href: "#",
-      },
-      {
-        title: "Facebook",
-        href: "#",
-      },
+      { name: "Events", href: "/#events" },
+      { name: "Join Us", href: "/#join" },
+      { name: "Newsletter", href: "/#newsletter" },
+      { name: "FAQ", href: "/#faq" },
     ],
   },
 ];
 
+const linkClass =
+  "text-gray-600 transition hover:text-green-700 focus-visible:outline-none focus-visible:underline";
+
 const Footer = () => {
   return (
-    <div className=" flex flex-col">
-      <div className="grow bg-muted" />
-      <footer>
-        <div className="max-w-screen-xl mx-auto">
-          <div className="py-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-8 gap-y-10 px-6 xl:px-0">
-            {/* <div className="col-span-full xl:col-span-2">
+    <footer className="border-t border-gray-200 bg-white text-gray-800">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 xl:px-6">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 md:grid-cols-4 md:py-14">
+          {/* Brand */}
+          <div className="col-span-2">
+            <Link href="/" className="inline-flex rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2">
               <Image
                 src={logo}
-                alt="Rushaga Logo"
-                width={40}
-                height={40}
-                className="rounded-full"
+                alt="A.G.I.E — Association of Ghanaians in Estonia, home"
+                sizes="150px"
+                className="h-14 w-auto"
               />
-
-              <p className="mt-4 text-muted-foreground">
-                Join our newsletter to get latest updates
-              </p>
-              <form className="mt-4 flex max-w-sm gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-                <button
-                  type="submit"
-                  className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div> */}
-
-            {footerSections.map(({ title, links }) => (
-              <div key={title}>
-                <h6 className="font-semibold">{title}</h6>
-                <ul className="mt-6 space-y-4">
-                  {links.map(({ title, href }) => (
-                    <li key={title}>
-                      <Link
-                        href={href}
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        {title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            </Link>
+            <p className="mt-4 max-w-sm text-gray-600 leading-relaxed">
+              The Association of Ghanaians in Estonia — bringing together
+              Ghanaians living, studying, and working across Estonia.
+            </p>
+            <div className="mt-6 flex gap-3">
+              {socialLinks.map(({ name, href }) => {
+                const Icon = socialIcons[name];
+                return (
+                  <a
+                    key={name}
+                    href={href}
+                    aria-label={name}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition hover:border-green-700 hover:bg-green-700 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700"
+                  >
+                    <Icon size={18} aria-hidden="true" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
-          <Separator />
-          <div className="py-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">
-            {/* Copyright */}
-            <span className="text-muted-foreground">
-              &copy; {new Date().getFullYear()}{" "}
-              <Link href="/" target="_blank">
-                Association of Ghanaians in Estonia
-              </Link>
-              . All rights reserved.
-            </span>
-          </div>
+
+          {/* Link columns */}
+          {footerSections.map(({ title, links }) => (
+            <nav key={title} aria-label={title}>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
+                {title}
+              </h2>
+              <ul className="mt-4 space-y-3">
+                {links.map(({ name, href }) => (
+                  <li key={name}>
+                    <Link href={href} className={linkClass}>
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
-      </footer>
-    </div>
+
+        {/* Contact strip */}
+        <ul className="flex flex-col gap-3 border-t border-gray-200 py-6 text-sm sm:flex-row sm:flex-wrap sm:gap-x-8">
+          <li>
+            <a href={`mailto:${contactInfo.email}`} className={`inline-flex items-center gap-2 ${linkClass}`}>
+              <Mail size={16} className="shrink-0 text-green-700" aria-hidden="true" />
+              <span className="[overflow-wrap:anywhere]">{contactInfo.email}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`tel:${contactInfo.phone.replace(/\s/g, "")}`} className={`inline-flex items-center gap-2 ${linkClass}`}>
+              <Phone size={16} className="shrink-0 text-green-700" aria-hidden="true" />
+              {contactInfo.phone}
+            </a>
+          </li>
+          <li className="inline-flex items-center gap-2 text-gray-600">
+            <MapPin size={16} className="shrink-0 text-green-700" aria-hidden="true" />
+            {contactInfo.location}
+          </li>
+        </ul>
+
+        {/* Copyright */}
+        <div className="border-t border-gray-200 py-6 text-center text-sm text-gray-500 sm:text-left">
+          &copy; {new Date().getFullYear()} Association of Ghanaians in Estonia.
+          All rights reserved.
+        </div>
+      </div>
+    </footer>
   );
 };
 
