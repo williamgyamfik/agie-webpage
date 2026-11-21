@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Button } from "./ui/button";
 
 const faqs = [
   {
@@ -40,7 +39,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 bg-gray-800">
+    <section id="faq" className="py-20 px-6 md:px-12 lg:px-24 bg-gray-800">
       <div className="max-w-7xl mx-auto text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-white">
           Frequently Asked <span className="text-green-400">Questions</span>
